@@ -1,7 +1,7 @@
 #pragma once
 #include "nodes.h"
 
-void free_psform(TermNode *head) {
+void free_psform(TermNode *head) {//обычный алгоритм освобождения памяти списка
     while (head) {
         FactorNode *factor = head->factors;
         while (factor) {

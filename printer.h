@@ -1,7 +1,7 @@
 #pragma once 
 #include "nodes.h"
 
-void print_psform(TermNode *head) {
+void print_psform(TermNode *head) {//функция вывода PS-форм в консоль
     if (!head) {
         printf("0\n");
         return;
@@ -11,7 +11,8 @@ void print_psform(TermNode *head) {
     while (current) {
         if (current != head) {
             printf(current->coefficient < 0 ? " - " : " + ");
-        } else if (current->coefficient < 0) {
+        } 
+        else if (current->coefficient < 0) {
             printf("-");
         }
 
@@ -21,11 +22,11 @@ void print_psform(TermNode *head) {
         }
 
         FactorNode *factor = current->factors;
-        if (factor && abs_coeff != 1) printf("*");  // * перед переменными, если коэффициент != 1
+        if (factor && abs_coeff != 1) printf("*");  //* перед переменными, если коэффициент != 1
 
         while (factor) {
             printf("%c", factor->factor);
-            if (factor->next) printf("*"); // Разделяем множители *
+            if (factor->next) printf("*"); //разделяем множители *
             factor = factor->next;
         }
 

@@ -1,30 +1,38 @@
 #pragma once 
 #include "nodes.h"
 
-void simplify(TermNode **head) {
-    if (!*head) return;
+void simplify(TermNode **head) {//функция для объединения слагаемых с одинаковыми множителями и удаления слагаемых с нулевыми коэффициентами
+    if (!*head) {
+        return;
+    }
     sort_terms(head);
 
     TermNode *current = *head, *prev = NULL;
     while (current) {
-        TermNode *runner = current->next, *runner_prev = current;
-        while (runner) {
-            if (compare_factors(current->factors, runner->factors) == 0) {
-                current->coefficient += runner->coefficient;
-                runner_prev->next = runner->next;
-                free(runner);
-                runner = runner_prev->next;
-            } else {
-                runner_prev = runner;
-                runner = runner->next;
+        TermNode *pseudo_iterator = current->next, *pseudo_iterator_prev = current;
+        while (pseudo_iterator) {//цикл для поиска и сложения одинаковых слагаемых 
+            if (compare_factors(current->factors, pseudo_iterator->factors) == 0) {
+                current->coefficient += pseudo_iterator->coefficient;
+                pseudo_iterator_prev->next = pseudo_iterator->next;
+                free(pseudo_iterator);
+                pseudo_iterator = pseudo_iterator_prev->next;
+            } 
+            else {
+                pseudo_iterator_prev = pseudo_iterator;
+                pseudo_iterator = pseudo_iterator->next;
             }
         }
         if (current->coefficient == 0) {
-            if (prev) prev->next = current->next;
-            else *head = current->next;
+            if (prev) {
+                prev->next = current->next;
+            }
+            else {
+                *head = current->next;
+            }
             free(current);
             current = (prev ? prev->next : *head);
-        } else {
+        } 
+        else {
             prev = current;
             current = current->next;
         }
