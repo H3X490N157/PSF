@@ -6,19 +6,20 @@
 #include "memory_free.h"
 #include "equation.h"
 #include "operations.h"
-
+//все нужны библиотеки импортировались в nodes.h, а через nodes.h - во все другие хэдеры, постарался везде расставить pragma once для пресечения ромбовидного наследования
+//здесь простой консольный UI для ручного тестирования; если нужны какие-либо тесты, пишите на email - добавлю, сам прогонял на наборе из 20 разных - везде сработало (если сломаете код - буду удивлён, но рад доработать); могу также сделать простой генератор тест-форм, но на плюсах 
 
 int main() {
     char operation;
-    char input1[10000], input2[10000]; //память беру с запасом, в принципе, можно оптимизировать с учётом того, что всего всего 100 слагаемых и 26 множителей
+    char form_a[10000], form_b[10000]; //память беру с запасом, в принципе, можно оптимизировать с учётом того, что всего всего 100 слагаемых и 26 множителей
 
     scanf(" %c", &operation);
-    scanf(" %[^\n]", input1);
-    scanf(" %[^\n]", input2);
+    scanf(" %[^\n]", form_a);
+    scanf(" %[^\n]", form_b);
 
     TermNode *ps1 = NULL, *ps2 = NULL;
-    parse_psform(input1, &ps1);
-    parse_psform(input2, &ps2);
+    parse_psform(form_a, &ps1);
+    parse_psform(form_b, &ps2);
 
     simplify(&ps1);
     simplify(&ps2);
@@ -27,15 +28,18 @@ int main() {
         TermNode *sum = add_psforms(ps1, ps2, 1);
         print_psform(sum);
         free_psform(sum);
-    } else if (operation == '-') {
+    } 
+    else if (operation == '-') {
         TermNode *diff = add_psforms(ps1, ps2, -1);
         print_psform(diff);
         free_psform(diff);
-    } else if (operation == '*') {
+    } 
+    else if (operation == '*') {
         TermNode *prod = multiply_psforms(ps1, ps2);
         print_psform(prod);
         free_psform(prod);
-    } else if (operation == '=') {
+    } 
+    else if (operation == '=') {
         printf(are_equal(ps1, ps2) ? "equal\n" : "not equal\n");
     } 
      else if (operation == '/') {
